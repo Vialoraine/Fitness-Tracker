@@ -1,7 +1,7 @@
   # Loreina Salalila - Fitness Tracker
   ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
   ## Description
-  In this repository, I created a workout tracker. As a user, an individual is able to view create and track daily workouts. Users are also able to log multiple exercises in a workout on a given day. Users are also able to track the name, type, weight, sets, reps, and duration of exercise. [Check out the deployed project over on Heroku]().
+  In this repository, I created a workout tracker. As a user, an individual is able to view create and track daily workouts. Users are also able to log multiple exercises in a workout on a given day. Users are also able to track the name, type, weight, sets, reps, and duration of exercise. [Check out the deployed project over on Heroku](https://hw-fitness-tracker.herokuapp.com/).
   ## Table of Contents
   * [Usage](#usage)
   * [License](#license)
