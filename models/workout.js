@@ -1,40 +1,57 @@
-const { model, Schema } = require('mongoose')
+const mongoose = require("mongoose");
 
-const Workout = new Schema({
-  day: {
-    type: Date,
-    default: () => new Date()
-  },
-  exercises: [
-    {
-      name: {
-        type: String,
-        trim: true,
-        required: 'Enter workout name'
-      },
-      type: {
-        type: String,
-        trim: true,
-        required: 'Enter a type'
-      },
-      weight: {
-        type: Number,
-        required: 'Enter a weight'
-      },
-      sets: {
-        type: Number,
-        required: 'Enter how many sets'
-      },
-      reps: {
-        type: Number,
-        required: 'Enter how many reps'
-      },
-      duration: {
-        type: Number,
-        required: 'Enter workout duration'
+const Schema = mongoose.Schema;
+
+const workoutSchema = new Schema(
+  {
+    day: {
+      type: Date,
+      default: Date.now
+    },
+    exercises: [
+      {
+        type: {
+          type: String,
+          trim: true,
+          required: "Enter an exercise type"
+        },
+        name: {
+          type: String,
+          trim: true,
+          required: "Enter an exercise name"
+        },
+        duration: {
+          type: Number,
+          required: "Enter an exercise duration in minutes"
+        },
+        weight: {
+          type: Number
+        },
+        reps: {
+          type: Number
+        },
+        sets: {
+          type: Number
+        },
+        distance: {
+          type: Number
+        }
       }
+    ]
+  },
+  {
+    toJSON: {
+      virtuals: true
     }
-  ]
-})
+  }
+);
 
-module.exports = model('Workout', Workout)
+workoutSchema.virtual("totalDuration").get(function () {
+  return this.exercises.reduce((total, exercise) => {
+    return total + exercise.duration;
+  }, 0);
+});
+
+const Workout = mongoose.model("Workout", workoutSchema);
+
+module.exports = Workout;
