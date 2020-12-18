@@ -1,29 +1,14 @@
-// dependencies
-const express = require("express");
-const mongoose = require("mongoose");
-const morgan = require("morgan");
+const express = require('express')
+const { join } = require('path')
 
-// define port
-const PORT = process.env.PORT || 3000;
+const app = express()
 
-// initialize app with express
-const app = express();
+app.use(express.static(join(__dirname, 'public')))
+app.use(express.urlencoded({ extended: true }))
+app.use(express.json())
 
-app.use(morgan("dev"));
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
-app.use(express.static("public"));
+app.use(require('./routes'))
 
-// routes
-app.use(require("./routes/api-routes"));
-app.use(require("./routes/html-routes"));
-
-// creating connection to mongoose
-mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workout", {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  useCreateIndex: true,
-  useFindAndModify: false,
-});
-
-app.listen(PORT, () => console.log(`Connected on PORT ${PORT}`));
+require('./db')
+  .then(() => app.listen(3000))
+  .catch(err => console.log(err))
