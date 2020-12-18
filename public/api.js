@@ -1,37 +1,19 @@
-const API = {
-  async getLastWorkout() {
-    const res = await fetch("/api/workouts");
-    const json = await res.json();
+const path = require("path");
+const router = require("express").Router();
 
-    return json[json.length - 1];
-  },
-  async getAllWorkouts() {
-    const res = await fetch("/api/workouts");
-    const json = await res.json();
+// home
+router.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "../public/index.html"));
+});
 
-    return json
-  },
-  async addExercise(data) {
-    const id = location.search.split("=")[1];
+// exercise page
+router.get("/exercise", (req, res) => {
+  res.sendFile(path.join(__dirname, "../public/exercise.html"));
+});
 
-    const res = await fetch("/api/workouts/" + id, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data)
-    });
+// stats page
+router.get("/stats", (req, res) => {
+  res.sendFile(path.join(__dirname, "../public/stats.html"));
+});
 
-    const json = await res.json();
-
-    return json;
-  },
-  async createWorkout() {
-    const res = await fetch("/api/workouts", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" }
-    });
-
-    const json = await res.json();
-
-    return json;
-  }
-};
+module.exports = router;
