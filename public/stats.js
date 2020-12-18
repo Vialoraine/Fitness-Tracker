@@ -1,6 +1,5 @@
 // get all workout data from back-end
-
-fetch("/api/workouts/range")
+fetch("/api/workouts")
   .then(response => {
     return response.json();
   })
@@ -8,37 +7,10 @@ fetch("/api/workouts/range")
     populateChart(data);
   });
 
-
-API.getWorkoutsInRange()
-
-  function generatePalette() {
-    const arr = [
-    "#003f5c",
-    "#2f4b7c",
-    "#665191",
-    "#a05195",
-    "#d45087",
-    "#f95d6a",
-    "#ff7c43",
-    "ffa600",
-    "#003f5c",
-    "#2f4b7c",
-    "#665191",
-    "#a05195",
-    "#d45087",
-    "#f95d6a",
-    "#ff7c43",
-    "ffa600"
-  ]
-
-  return arr;
-  }
 function populateChart(data) {
   let durations = duration(data);
-  let pounds = calculateTotalWeight(data);
+  let pounds = benchPress(data);
   let workouts = workoutNames(data);
-  const colors = generatePalette();
-
   let line = document.querySelector("#canvas").getContext("2d");
   let bar = document.querySelector("#canvas2").getContext("2d");
   let pie = document.querySelector("#canvas3").getContext("2d");
@@ -96,17 +68,17 @@ function populateChart(data) {
     type: "bar",
     data: {
       labels: [
-        "Sunday",
         "Monday",
         "Tuesday",
         "Wednesday",
         "Thursday",
         "Friday",
         "Saturday",
+        "Sunday"
       ],
       datasets: [
         {
-          label: "Pounds",
+          label: "Bench Press",
           data: pounds,
           backgroundColor: [
             "rgba(255, 99, 132, 0.2)",
@@ -129,10 +101,6 @@ function populateChart(data) {
       ]
     },
     options: {
-      title: {
-        display: true,
-        text: "Pounds Lifted"
-      },
       scales: {
         yAxes: [
           {
@@ -148,12 +116,18 @@ function populateChart(data) {
   let pieChart = new Chart(pie, {
     type: "pie",
     data: {
-      labels: workouts,
+      labels: ["Bench Press", "Running", "Dead Lifts", "Squats", "Rowing"],
       datasets: [
         {
           label: "Excercises Performed",
-          backgroundColor: colors,
-          data: durations
+          backgroundColor: [
+            "#3e95cd",
+            "#8e5ea2",
+            "#3cba9f",
+            "#e8c3b9",
+            "#c45850"
+          ],
+          data: workouts
         }
       ]
     },
@@ -168,12 +142,18 @@ function populateChart(data) {
   let donutChart = new Chart(pie2, {
     type: "doughnut",
     data: {
-      labels: workouts,
+      labels: ["Bench Press", "Running", "Dead Lifts", "Squats", "Rowing"],
       datasets: [
         {
           label: "Excercises Performed",
-          backgroundColor: colors,
-          data: pounds
+          backgroundColor: [
+            "#3e95cd",
+            "#8e5ea2",
+            "#3cba9f",
+            "#e8c3b9",
+            "#c45850"
+          ],
+          data: [2478, 5267, 734, 784, 433]
         }
       ]
     },
@@ -198,16 +178,16 @@ function duration(data) {
   return durations;
 }
 
-function calculateTotalWeight(data) {
-  let total = [];
+function benchPress(data) {
+  let bench = [];
 
   data.forEach(workout => {
     workout.exercises.forEach(exercise => {
-      total.push(exercise.weight);
+      bench.push(exercise.weight);
     });
   });
 
-  return total;
+  return bench;
 }
 
 function workoutNames(data) {
@@ -218,6 +198,6 @@ function workoutNames(data) {
       workouts.push(exercise.name);
     });
   });
-  
+
   return workouts;
 }
